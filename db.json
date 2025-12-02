@@ -1,0 +1,48 @@
+{
+  "reviews": [
+    {
+      "id": 1,
+      "title": "맛있는 카페 리뷰",
+      "content": "분위기가 좋고 커피가 맛있었어요!",
+      "category": "place",
+      "rating": 5,
+      "images": ["https://via.placeholder.com/300"],
+      "tags": ["카페", "데이트"],
+      "createdAt": "2024-01-15T10:00:00Z",
+      "updatedAt": "2024-01-15T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "title": "신발 구매 후기",
+      "content": "편하고 디자인도 예뻐요",
+      "category": "items",
+      "rating": 4,
+      "images": ["https://via.placeholder.com/300"],
+      "tags": ["신발", "쇼핑"],
+      "createdAt": "2024-01-16T10:00:00Z",
+      "updatedAt": "2024-01-16T10:00:00Z"
+    },
+    {
+      "id": 3,
+      "title": "맛집 후기",
+      "content": "파스타가 정말 맛있었어요!",
+      "category": "food",
+      "rating": 5,
+      "images": ["https://via.placeholder.com/300"],
+      "tags": ["맛집", "이탈리안"],
+      "createdAt": "2024-01-17T10:00:00Z",
+      "updatedAt": "2024-01-17T10:00:00Z"
+    },
+    {
+      "id": 4,
+      "title": "겨울 코트 리뷰",
+      "content": "따뜻하고 스타일도 좋아요",
+      "category": "clothing",
+      "rating": 4,
+      "images": ["https://via.placeholder.com/300"],
+      "tags": ["겨울", "아우터"],
+      "createdAt": "2024-01-18T10:00:00Z",
+      "updatedAt": "2024-01-18T10:00:00Z"
+    }
+  ]
+}
