@@ -2,45 +2,67 @@
   "reviews": [
     {
       "id": 1,
-      "title": "맛있는 카페 리뷰",
-      "content": "분위기가 좋고 커피가 맛있었어요!",
-      "category": "place",
-      "rating": 5,
-      "images": ["https://via.placeholder.com/300"],
-      "tags": ["카페", "데이트"],
+      "title": "우블랑 오마카세",
+      "content": "기념일로 동탄에 고기 오마카세인 우블랑에 다녀왔습니다. 분위기도 모던함에 좋았고 친절한 서비스도 좋았습니다. 저는 점심에 갔는데 2인기준으로 20만원 정도 나왔던거 같네요. 코스는 한입거리, 오늘의 날 해산물, 낙엽살, 한우 국물요리, 시그니처인 한우 안심 트러플 카츠샌드, 오늘의 1++ 한우 2종, 한우 곰탕과 솥밥 , 디저트 구성으로 나옵니다. 아무래도 고기류와 밥을 먹다보니 배가 불러서 만족감도 더 있었어요. 아쉬운 점은 조금 느끼다하고 느낄수 있을꺼 같아요! 그래도 기념일에 만족합니다~",
+      "category": "food",
+      "rating": 3.8,
+      "images": [
+        "/reviews/food/food_0.jpg",
+        "/reviews/food/food_1.jpg",
+        "/reviews/food/food_2.jpg",
+        "/reviews/food/food_3.jpg",
+        "/reviews/food/food_4.jpg",
+        "/reviews/food/food_5.jpg",
+        "/reviews/food/food_6.jpg",
+        "/reviews/food/food_7.jpg",
+        "/reviews/food/food_8.jpg"
+      ],
+      "tags": ["고기", "오마카세", "기념일"],
       "createdAt": "2024-01-15T10:00:00Z",
       "updatedAt": "2024-01-15T10:00:00Z"
     },
     {
       "id": 2,
-      "title": "신발 구매 후기",
-      "content": "편하고 디자인도 예뻐요",
-      "category": "items",
+      "title": "제주 미피 스토어",
+      "content": "제주도 여행중 미피 스토어를 들렸는데 제주에서만 볼 수 있는 굿즈들도 있고 되게 다양한 미피들을 볼 수 있어서 좋았어요 ! 여러분들도 제주 여행을 간다면 한번 들려보세요!",
+      "category": "place",
       "rating": 4,
-      "images": ["https://via.placeholder.com/300"],
-      "tags": ["신발", "쇼핑"],
+      "images": [
+        "/reviews/place/place_0.jpg",
+        "/reviews/place/place_1.jpg",
+        "/reviews/place/place_2.jpg",
+        "/reviews/place/place_3.jpg",
+        "/reviews/place/place_4.jpg",
+        "/reviews/place/place_5.jpg",
+        "/reviews/place/place_6.jpg"
+      ],
+      "tags": ["미피", "제주", "쇼핑"],
       "createdAt": "2024-01-16T10:00:00Z",
       "updatedAt": "2024-01-16T10:00:00Z"
     },
     {
       "id": 3,
-      "title": "맛집 후기",
-      "content": "파스타가 정말 맛있었어요!",
-      "category": "food",
+      "title": "에어팟 프로 3",
+      "content": "이번에 새로 나온 에어팟 프로 3를 구매했는데 전에는 프로 1 을사용하다가 써봐서 그런지 확실히 음질도 너무 좋고 노이즈 캔슬링이 훨씬 좋더라구요 비싼감이 없지않아 있지만 아깝지 않은 소비같아요",
+      "category": "items",
       "rating": 5,
-      "images": ["https://via.placeholder.com/300"],
-      "tags": ["맛집", "이탈리안"],
+      "images": ["/reviews/items/items_0.jpg"],
+      "tags": ["에어팟 프로3", "애플", "에어팟"],
       "createdAt": "2024-01-17T10:00:00Z",
       "updatedAt": "2024-01-17T10:00:00Z"
     },
     {
       "id": 4,
-      "title": "겨울 코트 리뷰",
-      "content": "따뜻하고 스타일도 좋아요",
+      "title": "휴먼메이드 반팔 후기",
+      "content": "이번에 교토에 여행가서 기념으로 휴먼 메이드 교토점에 방문해서 반팔을 구매했습니다. 확실히 국내에서 사는것보다 훨씬 저렴하게 구매해서 좋고 휴먼 메이드만의 재질이 너무 맘에 드는거 같아요! 소소하게 매장별 영수증도 모으는 재미가 있는거 같아요 ㅋㅋ",
       "category": "clothing",
-      "rating": 4,
-      "images": ["https://via.placeholder.com/300"],
-      "tags": ["겨울", "아우터"],
+      "rating": 5,
+      "images": [
+        "/reviews/clothing/clothing_0.jpg",
+        "/reviews/clothing/clothing_1.jpg",
+        "/reviews/clothing/clothing_2.jpg"
+      ],
+      "tags": ["반팔", "휴먼메이드", "교토"],
       "createdAt": "2024-01-18T10:00:00Z",
       "updatedAt": "2024-01-18T10:00:00Z"
     }
