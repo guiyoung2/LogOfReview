@@ -143,7 +143,7 @@ const HomePage = () => {
       <HeroSection>
         <div>
           <h1>Today's Review</h1>
-          <p>오늘 다른 사람들은 어떻게 생각하는지 궁금하다면?</p>
+          <p>오늘 다른 사람들은 어떤 리뷰를 남겼는지 궁금하다면?</p>
           <CTAButton to="/reviews">리뷰 둘러보기</CTAButton>
         </div>
       </HeroSection>

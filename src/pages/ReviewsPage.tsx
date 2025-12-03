@@ -1,4 +1,7 @@
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import ReviewCard from "../components/review/ReviewCard";
+import styled from "styled-components";
 
 const ReviewsPage = () => {
   return (

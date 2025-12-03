@@ -4,11 +4,18 @@ import AboutPage from "./pages/AboutPage";
 import ReviewsPage from "./pages/ReviewsPage";
 import LoginPage from "./pages/LoginPage";
 import Header from "./components/common/Header";
+import NotFoundPage from "./pages/NotFoundPage";
+import ClickSpark from "./components/common/ClickEffect";
 import { Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div>
+    <ClickSpark
+      sparkColor="#667eea"
+      sparkRadius={20}
+      sparkCount={12}
+      duration={500}
+    >
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -16,8 +23,9 @@ function App() {
         <Route path="/reviews" element={<ReviewsPage />} />
         <Route path="/reviews/:category" element={<ReviewsPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
-    </div>
+    </ClickSpark>
   );
 }
 
