@@ -7,6 +7,7 @@ import Header from "./components/common/Header";
 import NotFoundPage from "./pages/NotFoundPage";
 import ClickSpark from "./components/common/ClickEffect";
 import { Routes, Route } from "react-router-dom";
+import ReviewDetailPage from "./pages/ReviewDetailPage";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/reviews" element={<ReviewsPage />} />
+        <Route path="/reviews/:id" element={<ReviewDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

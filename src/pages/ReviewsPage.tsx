@@ -5,6 +5,14 @@ import { getReviews, getReviewsByCategory } from "../api/reviews";
 import ReviewCard from "../components/review/ReviewCard";
 import styled from "styled-components";
 
+const FilterContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+`;
+
 const FilterButton = styled.button<{ $active: boolean }>`
   padding: 10px 20px;
   border: 2px solid ${(props) => (props.$active ? "#667eea" : "#ddd")};
@@ -19,14 +27,6 @@ const FilterButton = styled.button<{ $active: boolean }>`
     border-color: #667eea;
     background: ${(props) => (props.$active ? "#5568d3" : "#f0f0ff")};
   }
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 30px;
-  flex-wrap: wrap;
 `;
 
 const PageContainer = styled.div`

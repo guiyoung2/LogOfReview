@@ -107,7 +107,7 @@ const ReviewCard = ({
     images?.length > 0 ? images[0] : `reviews/${category}/ex_${category}.png`;
 
   return (
-    <Card to={`/reviews/${category}/${id}`}>
+    <Card to={`/reviews/${id}`}>
       <ImageWrapper>
         <img src={displayImage} alt={title} />
         {images.length > 1 && <ImageCount>📷 {images.length}</ImageCount>}
