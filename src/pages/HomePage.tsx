@@ -160,19 +160,19 @@ const HomePage = () => {
           카테고리별 리뷰
         </h2>
         <CategoryGrid>
-          <CategoryCard to="/reviews/food">
+          <CategoryCard to="/reviews?category=food">
             <h3>🍔 음식</h3>
             <p>맛집, 카페, 디저트 리뷰</p>
           </CategoryCard>
-          <CategoryCard to="/reviews/place">
+          <CategoryCard to="/reviews?category=place">
             <h3>📍 장소</h3>
             <p>여행지, 카페, 공간 리뷰</p>
           </CategoryCard>
-          <CategoryCard to="/reviews/items">
+          <CategoryCard to="/reviews?category=items">
             <h3>🛍️ 물건</h3>
             <p>제품, 가전, 생활용품 리뷰</p>
           </CategoryCard>
-          <CategoryCard to="/reviews/clothing">
+          <CategoryCard to="/reviews?category=clothing">
             <h3>👕 옷</h3>
             <p>의류, 신발, 액세서리 리뷰</p>
           </CategoryCard>
