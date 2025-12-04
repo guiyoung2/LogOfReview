@@ -46,13 +46,14 @@ const CardContent = styled.div`
 `;
 
 const Category = styled.span`
-  display: inline-block;
+  display: block;
   padding: 4px 12px;
   background: #f0f0f0;
   border-radius: 12px;
   font-size: 12px;
   color: #666;
   margin-bottom: 8px;
+  float: right;
 `;
 
 const Title = styled.h3`
@@ -65,6 +66,21 @@ const Rating = styled.div`
   font-size: 14px;
   color: #ffa500;
   margin-bottom: 8px;
+`;
+
+const Tags = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+
+  span {
+    background: #e3f2fd;
+    color: #1976d2;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+  }
 `;
 
 const Content = styled.p`
@@ -85,6 +101,7 @@ const ReviewCard = ({
   rating,
   images,
   content,
+  tags,
 }: ReviewCardProps) => {
   const displayImage =
     images?.length > 0 ? images[0] : `reviews/${category}/ex_${category}.png`;
@@ -97,6 +114,11 @@ const ReviewCard = ({
       </ImageWrapper>
       <CardContent>
         <Category>{category}</Category>
+        <Tags>
+          {tags.map((tag, index) => (
+            <span key={index}>#{tag}</span>
+          ))}
+        </Tags>
         <Title>{title}</Title>
         <Rating>⭐ {rating}</Rating>
         <Content>{content}</Content>

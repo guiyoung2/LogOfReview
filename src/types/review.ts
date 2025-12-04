@@ -12,5 +12,5 @@ export interface Review {
 
 export type ReviewCardProps = Pick<
   Review,
-  "id" | "title" | "category" | "rating" | "images" | "content"
+  "id" | "title" | "category" | "rating" | "images" | "content" | "tags"
 >;

@@ -181,6 +181,7 @@ const ReviewsPage = () => {
             rating={review.rating}
             images={review.images}
             content={review.content}
+            tags={review.tags}
           />
         ))}
       </ReviewGrid>
