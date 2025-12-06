@@ -2,7 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { getReviewById } from "../api/reviews";
-import * as S from "./ReviewDetailPage.ts";
+import * as S from "./ReviewDetailPageS";
 
 const ReviewDetailPage = () => {
   const { id } = useParams();

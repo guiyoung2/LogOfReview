@@ -2,23 +2,23 @@
   "users": [
     {
       "id": 1,
-      "username": "김리뷰",
-      "password": "1234",
       "email": "review1@test.com",
+      "password": "1234",
+      "username": "김리뷰",
       "nickname": "침착맨"
     },
     {
       "id": 2,
-      "username": "이리뷰",
-      "password": "1234",
       "email": "review2@test.com",
+      "password": "1234",
+      "username": "이리뷰",
       "nickname": "우원박"
     },
     {
       "id": 3,
-      "username": "권리뷰",
-      "password": "1234",
       "email": "review3@test.com",
+      "password": "1234",
+      "username": "권리뷰",
       "nickname": "뼈우재"
     }
   ],
