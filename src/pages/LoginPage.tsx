@@ -92,6 +92,12 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { login: setLogin } = useUserStore();
 
+  // 이메일 형식 검증 함수
+  const isValidEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -99,6 +105,12 @@ const LoginPage = () => {
     // 입력값 검증
     if (!email.trim()) {
       setError("아이디를 작성하세요");
+      return;
+    }
+
+    // 이메일 형식 검증
+    if (!isValidEmail(email.trim())) {
+      setError("올바른 이메일 형식을 입력하세요");
       return;
     }
 
@@ -127,9 +139,9 @@ const LoginPage = () => {
     <LoginContainer>
       <LoginCard>
         <Title>로그인 후 리뷰를 작성해 보세요!</Title>
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} noValidate>
           <Input
-            type="email"
+            type="text"
             placeholder="테스트 아이디: review1@test.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
