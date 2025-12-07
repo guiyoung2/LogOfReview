@@ -95,6 +95,18 @@ const LoginPage = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+
+    // 입력값 검증
+    if (!email.trim()) {
+      setError("아이디를 작성하세요");
+      return;
+    }
+
+    if (!password.trim()) {
+      setError("비밀번호를 작성하세요");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -121,7 +133,6 @@ const LoginPage = () => {
             placeholder="테스트 아이디: review1@test.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
             disabled={isLoading}
           />
           <Input
@@ -129,7 +140,6 @@ const LoginPage = () => {
             placeholder="1234"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
             disabled={isLoading}
           />
           {error && <ErrorMessage>{error}</ErrorMessage>}
