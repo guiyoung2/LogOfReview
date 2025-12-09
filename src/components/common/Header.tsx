@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Logo from "../../assets/LogoImg.png";
 import styled from "styled-components";
+import { useUserStore } from "../../store/userStore";
 
 const HeaderContainer = styled.header`
   display: flex;
@@ -36,9 +37,35 @@ const NavContainer = styled.nav`
 
 const LoginContainer = styled.div`
   padding: 5px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`;
+
+const UserInfo = styled.span`
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+`;
+
+const LogoutButton = styled.button`
+  padding: 8px 16px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background: #5568d3;
+  }
 `;
 
 const Header = () => {
+  const { isLoggedIn, user, logout } = useUserStore();
+
   return (
     <HeaderContainer className="Header">
       <div className="Logo">
@@ -59,7 +86,14 @@ const Header = () => {
           </li>
         </ul>
         <LoginContainer>
-          <Link to="/login">Login</Link>
+          {isLoggedIn ? (
+            <>
+              <UserInfo>{user?.nickname}님</UserInfo>
+              <LogoutButton onClick={logout}>로그아웃</LogoutButton>
+            </>
+          ) : (
+            <Link to="/login">로그인</Link>
+          )}
         </LoginContainer>
       </NavContainer>
     </HeaderContainer>
