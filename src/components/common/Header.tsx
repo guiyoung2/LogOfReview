@@ -46,21 +46,30 @@ const UserInfo = styled.span`
   font-size: 16px;
   color: #333;
   font-weight: 500;
+  a {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+  }
 `;
 
 const LogoutButton = styled.button`
-  padding: 8px 16px;
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+
+  /* padding: 8px 16px;
   background: #667eea;
   color: white;
-  border: none;
   border-radius: 6px;
   font-size: 14px;
-  cursor: pointer;
   transition: background 0.3s;
 
   &:hover {
     background: #5568d3;
-  }
+  } */
 `;
 
 const Header = () => {
@@ -75,9 +84,9 @@ const Header = () => {
       </div>
       <NavContainer>
         <ul>
-          <li>
+          {/* <li>
             <Link to="/">Home</Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/about">About</Link>
           </li>
@@ -88,7 +97,12 @@ const Header = () => {
         <LoginContainer>
           {isLoggedIn ? (
             <>
-              <UserInfo>{user?.nickname}님</UserInfo>
+              <UserInfo>
+                <span style={{ fontWeight: "bold" }}>{user?.nickname}</span>님
+              </UserInfo>
+              <UserInfo>
+                <Link to={`/user/${user?.id}`}>My page</Link>
+              </UserInfo>
               <LogoutButton onClick={logout}>로그아웃</LogoutButton>
             </>
           ) : (
