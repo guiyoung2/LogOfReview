@@ -60,16 +60,11 @@ const LogoutButton = styled.button`
   border: none;
   cursor: pointer;
 
-  /* padding: 8px 16px;
-  background: #667eea;
-  color: white;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: background 0.3s;
-
-  &:hover {
-    background: #5568d3;
-  } */
+  a {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+  }
 `;
 
 const Header = () => {

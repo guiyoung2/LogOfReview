@@ -3,6 +3,7 @@ import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import ReviewsPage from "./pages/ReviewsPage";
 import LoginPage from "./pages/LoginPage";
+import ReviewWritePage from "./pages/ReviewWritePage";
 import Header from "./components/common/Header";
 import NotFoundPage from "./pages/NotFoundPage";
 import ClickSpark from "./components/common/ClickEffect";
@@ -22,6 +23,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/reviews" element={<ReviewsPage />} />
+        <Route path="/reviews/new" element={<ReviewWritePage />} />
         <Route path="/reviews/:id" element={<ReviewDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<NotFoundPage />} />
