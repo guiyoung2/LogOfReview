@@ -42,8 +42,8 @@
         "/reviews/food/food_8.jpg"
       ],
       "tags": ["고기", "오마카세", "기념일"],
-      "createdAt": "2024-01-15T10:00:00Z",
-      "updatedAt": "2024-01-15T10:00:00Z"
+      "createdAt": "2025-11-15T10:00:00Z",
+      "updatedAt": "2025-11-15T10:00:00Z"
     },
     {
       "id": "2",
@@ -62,8 +62,8 @@
         "/reviews/place/place_6.jpg"
       ],
       "tags": ["미피", "제주", "쇼핑"],
-      "createdAt": "2024-01-16T10:00:00Z",
-      "updatedAt": "2024-01-16T10:00:00Z"
+      "createdAt": "2025-11-20T10:00:00Z",
+      "updatedAt": "2025-11-20T10:00:00Z"
     },
     {
       "id": "3",
@@ -74,8 +74,8 @@
       "rating": 5,
       "images": ["/reviews/items/items_0.jpg"],
       "tags": ["에어팟 프로3", "애플", "에어팟"],
-      "createdAt": "2024-01-17T10:00:00Z",
-      "updatedAt": "2024-01-17T10:00:00Z"
+      "createdAt": "2025-11-25T10:00:00Z",
+      "updatedAt": "2025-11-25T10:00:00Z"
     },
     {
       "id": "4",
@@ -90,8 +90,8 @@
         "/reviews/clothing/clothing_2.jpg"
       ],
       "tags": ["반팔", "휴먼메이드", "교토"],
-      "createdAt": "2024-01-18T10:00:00Z",
-      "updatedAt": "2024-01-18T10:00:00Z"
+      "createdAt": "2025-08-18T10:00:00Z",
+      "updatedAt": "2025-08-18T10:00:00Z"
     },
     {
       "id": "5",
@@ -102,8 +102,8 @@
       "rating": 5,
       "images": [],
       "tags": ["깐부 치킨", "젠슨황", "이재용", "정의선"],
-      "createdAt": "2024-01-18T10:00:00Z",
-      "updatedAt": "2024-01-18T10:00:00Z"
+      "createdAt": "2025-12-18T10:00:00Z",
+      "updatedAt": "2025-12-18T10:00:00Z"
     }
   ]
 }

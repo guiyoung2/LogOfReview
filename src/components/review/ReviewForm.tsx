@@ -90,7 +90,7 @@ const StarButton = styled.button<{ $active: boolean }>`
   border: none;
   font-size: 32px;
   cursor: pointer;
-  color: ${props => (props.$active ? "#ffa500" : "#ddd")};
+  color: ${(props) => (props.$active ? "#ffa500" : "#ddd")};
   transition: transform 0.2s;
 
   &:hover {
@@ -227,7 +227,7 @@ const Button = styled.button<{ $variant?: "primary" | "secondary" }>`
   cursor: pointer;
   transition: all 0.3s;
 
-  ${props =>
+  ${(props) =>
     props.$variant === "primary"
       ? `
     background: #667eea;
@@ -249,6 +249,13 @@ const Button = styled.button<{ $variant?: "primary" | "secondary" }>`
     &:hover {
       background: #e0e0e0;
     }
+    
+    &:disabled {
+      background: #e0e0e0;
+      color: #999;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
   `}
 `;
 
@@ -267,10 +274,10 @@ const ReviewForm = ({
   const [images, setImages] = useState<string[]>(initialData?.images || []);
   const [imageInput, setImageInput] = useState("");
 
-  // 태그 추가
+  // 태그 추가 (최대 4개)
   const handleAddTag = () => {
     const trimmedTag = tagInput.trim();
-    if (trimmedTag && !tags.includes(trimmedTag)) {
+    if (trimmedTag && !tags.includes(trimmedTag) && tags.length < 4) {
       setTags([...tags, trimmedTag]);
       setTagInput("");
     }
@@ -286,7 +293,7 @@ const ReviewForm = ({
 
   // 태그 제거
   const handleRemoveTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
+    setTags(tags.filter((tag) => tag !== tagToRemove));
   };
 
   // 이미지 추가
@@ -310,7 +317,7 @@ const ReviewForm = ({
 
   // 이미지 제거
   const handleRemoveImage = (imageToRemove: string) => {
-    setImages(images.filter(img => img !== imageToRemove));
+    setImages(images.filter((img) => img !== imageToRemove));
   };
 
   // 폼 제출
@@ -336,7 +343,7 @@ const ReviewForm = ({
         <Input
           type="text"
           value={title}
-          onChange={e => setTitle(e.target.value)}
+          onChange={(e) => setTitle(e.target.value)}
           placeholder="리뷰 제목을 입력하세요"
           required
         />
@@ -346,7 +353,7 @@ const ReviewForm = ({
         <Label>카테고리 *</Label>
         <CategorySelect
           value={category}
-          onChange={e => setCategory(e.target.value)}
+          onChange={(e) => setCategory(e.target.value)}
           required
         >
           <option value="food">🍔 음식</option>
@@ -359,7 +366,7 @@ const ReviewForm = ({
       <FormGroup>
         <Label>평점 *</Label>
         <RatingContainer>
-          {[1, 2, 3, 4, 5].map(star => (
+          {[1, 2, 3, 4, 5].map((star) => (
             <StarButton
               key={star}
               type="button"
@@ -379,23 +386,46 @@ const ReviewForm = ({
         <Label>내용 *</Label>
         <TextArea
           value={content}
-          onChange={e => setContent(e.target.value)}
+          onChange={(e) => setContent(e.target.value)}
           placeholder="리뷰 내용을 입력하세요"
           required
         />
       </FormGroup>
 
       <FormGroup>
-        <Label>태그</Label>
+        <Label>
+          태그{" "}
+          {tags.length > 0 && (
+            <span
+              style={{ fontSize: "14px", fontWeight: "normal", color: "#666" }}
+            >
+              ({tags.length}/4)
+            </span>
+          )}
+        </Label>
         <TagInputContainer>
           <TagInput
             type="text"
             value={tagInput}
-            onChange={e => setTagInput(e.target.value)}
+            onChange={(e) => setTagInput(e.target.value)}
             onKeyDown={handleTagInputKeyDown}
-            placeholder="태그를 입력하고 Enter를 누르세요"
+            placeholder={
+              tags.length >= 4
+                ? "태그는 최대 4개까지 추가할 수 있습니다"
+                : "태그를 입력하고 Enter를 누르세요"
+            }
+            disabled={tags.length >= 4}
+            style={{
+              opacity: tags.length >= 4 ? 0.6 : 1,
+              cursor: tags.length >= 4 ? "not-allowed" : "text",
+            }}
           />
-          <Button type="button" onClick={handleAddTag} $variant="secondary">
+          <Button
+            type="button"
+            onClick={handleAddTag}
+            $variant="secondary"
+            disabled={tags.length >= 4}
+          >
             추가
           </Button>
         </TagInputContainer>
@@ -423,7 +453,7 @@ const ReviewForm = ({
             <ImageInput
               type="text"
               value={imageInput}
-              onChange={e => setImageInput(e.target.value)}
+              onChange={(e) => setImageInput(e.target.value)}
               onKeyDown={handleImageInputKeyDown}
               placeholder="이미지 URL을 입력하세요"
             />
