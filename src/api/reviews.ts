@@ -43,7 +43,8 @@ export const getReviewById = async (id: number): Promise<Review> => {
   // 프로덕션 환경에서는 정적 데이터에서 찾기
   if (import.meta.env.PROD) {
     const reviews = await loadStaticData();
-    const review = reviews.find((r) => r.id === id);
+    // id 타입 변환 (문자열일 수도 있으므로)
+    const review = reviews.find((r) => Number(r.id) === id);
     if (!review) {
       throw new Error("Review not found");
     }

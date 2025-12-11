@@ -14,16 +14,27 @@ try {
   const dbContent = readFileSync(dbPath, "utf-8");
   const db = JSON.parse(dbContent);
 
-  // reviews 추출해서 public에 복사
+  // reviews 추출 및 id를 숫자로 변환
+  const reviews = db.reviews.map((review) => ({
+    ...review,
+    id: Number(review.id),
+    userId: Number(review.userId),
+  }));
+
   const reviewsPath = join(__dirname, "../public/reviews.json");
-  writeFileSync(reviewsPath, JSON.stringify(db.reviews, null, 2), "utf-8");
+  writeFileSync(reviewsPath, JSON.stringify(reviews, null, 2), "utf-8");
   console.log(
     "✅ db.json의 reviews 데이터가 public/reviews.json으로 복사되었습니다."
   );
 
-  // users 추출해서 public에 복사 (로그인용)
+  // users 추출 및 id를 숫자로 변환
+  const users = db.users.map((user) => ({
+    ...user,
+    id: Number(user.id),
+  }));
+
   const usersPath = join(__dirname, "../public/users.json");
-  writeFileSync(usersPath, JSON.stringify(db.users, null, 2), "utf-8");
+  writeFileSync(usersPath, JSON.stringify(users, null, 2), "utf-8");
   console.log(
     "✅ db.json의 users 데이터가 public/users.json으로 복사되었습니다."
   );
