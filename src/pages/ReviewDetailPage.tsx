@@ -1,12 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { getReviewById } from "../api/reviews";
+import { getReviewById, deleteReview } from "../api/reviews";
+import { useUserStore } from "../store/userStore";
 import * as S from "./ReviewDetailPageS";
 
 const ReviewDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { user, isLoggedIn } = useUserStore();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -16,8 +19,40 @@ const ReviewDetailPage = () => {
     error,
   } = useQuery({
     queryKey: ["review", id],
-    queryFn: () => getReviewById(Number(id)),
+    queryFn: () => {
+      const reviewId = Number(id);
+      if (isNaN(reviewId)) {
+        throw new Error("유효하지 않은 리뷰 ID입니다");
+      }
+      return getReviewById(reviewId);
+    },
+    enabled: !!id && !isNaN(Number(id)), // id가 유효한 숫자일 때만 실행
   });
+
+  // 리뷰 삭제 Mutation
+  const deleteMutation = useMutation({
+    mutationFn: () => {
+      const reviewId = Number(id);
+      if (isNaN(reviewId)) {
+        throw new Error("유효하지 않은 리뷰 ID입니다");
+      }
+      return deleteReview(reviewId);
+    },
+    onSuccess: () => {
+      // 리뷰 목록 쿼리 무효화
+      queryClient.invalidateQueries({ queryKey: ["reviews"] });
+      // 삭제 완료 후 리뷰 목록 페이지로 이동
+      navigate("/reviews", { replace: true });
+    },
+    onError: (error) => {
+      console.error("리뷰 삭제 실패:", error);
+      alert("리뷰 삭제에 실패했습니다. 다시 시도해주세요.");
+    },
+  });
+
+  // 권한 체크 (본인 리뷰인지 확인)
+  const isOwner =
+    isLoggedIn && user && review && Number(review.userId) === Number(user.id);
 
   if (isLoading) return <S.Container>로딩 중...</S.Container>;
   if (error) return <S.Container>에러 발생</S.Container>;
@@ -40,11 +75,34 @@ const ReviewDetailPage = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
+  // 삭제 핸들러
+  const handleDelete = () => {
+    if (window.confirm("정말 이 리뷰를 삭제하시겠습니까?")) {
+      deleteMutation.mutate();
+    }
+  };
+
+  // 수정 핸들러
+  const handleEdit = () => {
+    navigate(`/reviews/${id}/edit`, { replace: true });
+  };
+
   return (
     <S.Container>
-      {/* 뒤로가기 버튼 */}
+      {/* 뒤로가기 버튼 및 수정/삭제 버튼 */}
       <S.ButtonContainer>
         <S.BackButton onClick={() => navigate(-1)}>← 뒤로가기</S.BackButton>
+        {isOwner && (
+          <S.ActionButtonContainer>
+            <S.EditButton onClick={handleEdit}>수정</S.EditButton>
+            <S.DeleteButton
+              onClick={handleDelete}
+              disabled={deleteMutation.isPending}
+            >
+              {deleteMutation.isPending ? "삭제 중..." : "삭제"}
+            </S.DeleteButton>
+          </S.ActionButtonContainer>
+        )}
       </S.ButtonContainer>
 
       {/* 헤더 */}

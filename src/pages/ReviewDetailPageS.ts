@@ -10,7 +10,8 @@ export const Container = styled.div`
 // 2. 뒤로가기 버튼
 export const ButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
 `;
 
@@ -20,11 +21,55 @@ export const BackButton = styled.button`
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-bottom: 20px;
   font-size: 16px;
 
   &:hover {
     background: #e0e0e0;
+  }
+`;
+
+// 수정/삭제 버튼 컨테이너
+export const ActionButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
+`;
+
+// 수정 버튼
+export const EditButton = styled.button`
+  padding: 10px 20px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s;
+
+  &:hover {
+    background: #5568d3;
+  }
+`;
+
+// 삭제 버튼
+export const DeleteButton = styled.button`
+  padding: 10px 20px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s;
+
+  &:hover {
+    background: #c0392b;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
   }
 `;
 

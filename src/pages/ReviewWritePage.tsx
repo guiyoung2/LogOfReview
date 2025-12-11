@@ -30,9 +30,9 @@ const ReviewWritePage = () => {
       // 리뷰 목록 쿼리 무효화 (자동 새로고침)
       queryClient.invalidateQueries({ queryKey: ["reviews"] });
       // 작성 완료 후 리뷰 목록 페이지로 이동
-      navigate("/reviews");
+      navigate("/reviews", { replace: true });
     },
-    onError: error => {
+    onError: (error) => {
       console.error("리뷰 작성 실패:", error);
       alert("리뷰 작성에 실패했습니다. 다시 시도해주세요.");
     },
@@ -80,7 +80,7 @@ const ReviewWritePage = () => {
     // 작성 페이지에서는 항상 CreateReviewRequest로 변환
     const createData: CreateReviewRequest = {
       ...data,
-      userId: user.id, // 로그인한 사용자 ID 추가
+      userId: Number(user.id), // 로그인한 사용자 ID 추가 (숫자로 변환)
     };
     await createMutation.mutateAsync(createData);
   };

@@ -1,9 +1,22 @@
 import axios from "axios";
 import { useUserStore } from "../store/userStore";
 
+// 환경에 따른 baseURL 설정
+// 개발 환경: json-server (localhost:3001)
+// 프로덕션 환경: Vercel API (같은 도메인의 /api)
+const getBaseURL = () => {
+  // Vercel 배포 환경에서는 같은 도메인의 /api 사용
+  if (import.meta.env.PROD) {
+    // 프로덕션에서는 상대 경로 사용 (같은 도메인)
+    return "/api";
+  }
+  // 개발 환경에서는 json-server 사용
+  return import.meta.env.VITE_API_URL || "http://localhost:3001";
+};
+
 // Axios 인스턴스 생성
 const api = axios.create({
-  baseURL: "http://localhost:3001", // JSON Server 주소
+  baseURL: getBaseURL(),
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",
