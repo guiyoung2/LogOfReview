@@ -88,7 +88,7 @@ const ReviewWritePage = () => {
   // 취소 핸들러
   const handleCancel = () => {
     if (window.confirm("작성 중인 내용이 사라집니다. 정말 취소하시겠습니까?")) {
-      navigate(-1);
+      navigate("/reviews", { replace: true });
     }
   };
 

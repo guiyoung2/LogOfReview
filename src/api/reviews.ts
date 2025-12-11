@@ -61,9 +61,11 @@ export const createReview = async (
 ): Promise<Review> => {
   // 프로덕션 환경에서는 읽기 전용이므로 에러 반환
   if (import.meta.env.PROD) {
-    throw new Error(
-      "포트폴리오 데모 버전에서는 리뷰 작성이 불가능합니다. 로컬에서 npm run dev와 npm run server를 실행하여 테스트해주세요."
-    );
+    const errorMessage =
+      "포트폴리오 데모 버전에서는 리뷰 작성이 불가능합니다. 로컬에서 npm run dev와 npm run server를 실행하여 테스트해주세요.";
+    // 프로덕션 환경에서는 경고창 표시
+    alert(errorMessage);
+    throw new Error(errorMessage);
   }
   // 개발 환경에서는 API 호출
   const now = new Date().toISOString();
@@ -83,9 +85,11 @@ export const updateReview = async (
 ): Promise<Review> => {
   // 프로덕션 환경에서는 읽기 전용이므로 에러 반환
   if (import.meta.env.PROD) {
-    throw new Error(
-      "포트폴리오 데모 버전에서는 리뷰 수정이 불가능합니다. 로컬에서 npm run dev와 npm run server를 실행하여 테스트해주세요."
-    );
+    const errorMessage =
+      "포트폴리오 데모 버전에서는 리뷰 수정이 불가능합니다. 로컬에서 npm run dev와 npm run server를 실행하여 테스트해주세요.";
+    // 프로덕션 환경에서는 경고창 표시
+    alert(errorMessage);
+    throw new Error(errorMessage);
   }
   // 개발 환경에서는 API 호출
   const existingReview = await getReviewById(id);
@@ -106,9 +110,11 @@ export const updateReview = async (
 export const deleteReview = async (id: number): Promise<void> => {
   // 프로덕션 환경에서는 읽기 전용이므로 에러 반환
   if (import.meta.env.PROD) {
-    throw new Error(
-      "포트폴리오 데모 버전에서는 리뷰 삭제가 불가능합니다. 로컬에서 npm run dev와 npm run server를 실행하여 테스트해주세요."
-    );
+    const errorMessage =
+      "포트폴리오 데모 버전에서는 리뷰 삭제가 불가능합니다. 로컬에서 npm run dev와 npm run server를 실행하여 테스트해주세요.";
+    // 프로덕션 환경에서는 경고창 표시
+    alert(errorMessage);
+    throw new Error(errorMessage);
   }
   // 개발 환경에서는 API 호출
   await api.delete(`/reviews/${id}`);
