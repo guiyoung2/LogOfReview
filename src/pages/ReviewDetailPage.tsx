@@ -2,7 +2,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { getReviewById, deleteReview } from "../api/reviews";
+import {
+  getComments,
+  createComment,
+  updateComment,
+  deleteComment,
+} from "../api/comments";
+import { getUsers } from "../api/users";
 import { useUserStore } from "../store/userStore";
+import CommentList from "../components/comment/CommentList";
 import * as S from "./ReviewDetailPageS";
 
 const ReviewDetailPage = () => {
@@ -13,6 +21,8 @@ const ReviewDetailPage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const reviewId = id ? Number(id) : null;
+
   const {
     data: review,
     isLoading,
@@ -20,8 +30,7 @@ const ReviewDetailPage = () => {
   } = useQuery({
     queryKey: ["review", id],
     queryFn: () => {
-      const reviewId = Number(id);
-      if (isNaN(reviewId)) {
+      if (!reviewId || isNaN(reviewId)) {
         throw new Error("유효하지 않은 리뷰 ID입니다");
       }
       return getReviewById(reviewId);
@@ -29,11 +38,34 @@ const ReviewDetailPage = () => {
     enabled: !!id && !isNaN(Number(id)), // id가 유효한 숫자일 때만 실행
   });
 
+  // 댓글 목록 조회
+  const { data: comments = [], isLoading: isLoadingComments } = useQuery({
+    queryKey: ["comments", reviewId],
+    queryFn: () => {
+      if (!reviewId || isNaN(reviewId)) {
+        throw new Error("유효하지 않은 리뷰 ID입니다");
+      }
+      return getComments(reviewId);
+    },
+    enabled: !!reviewId && !isNaN(reviewId),
+  });
+
+  // 사용자 목록 조회 (댓글 작성자 정보용)
+  const { data: users = [] } = useQuery({
+    queryKey: ["users"],
+    queryFn: getUsers,
+  });
+
+  // 사용자 맵 생성 (userId -> nickname)
+  const usersMap = users.reduce((acc, u) => {
+    acc[u.id] = { nickname: u.nickname };
+    return acc;
+  }, {} as Record<number, { nickname: string }>);
+
   // 리뷰 삭제 Mutation
   const deleteMutation = useMutation({
     mutationFn: () => {
-      const reviewId = Number(id);
-      if (isNaN(reviewId)) {
+      if (!reviewId || isNaN(reviewId)) {
         throw new Error("유효하지 않은 리뷰 ID입니다");
       }
       return deleteReview(reviewId);
@@ -47,6 +79,55 @@ const ReviewDetailPage = () => {
     onError: (error) => {
       console.error("리뷰 삭제 실패:", error);
       alert("리뷰 삭제에 실패했습니다. 다시 시도해주세요.");
+    },
+  });
+
+  // 댓글 작성 Mutation
+  const createCommentMutation = useMutation({
+    mutationFn: (content: string) => {
+      if (!reviewId || !user) {
+        throw new Error("리뷰 ID 또는 사용자 정보가 없습니다");
+      }
+      return createComment({
+        reviewId,
+        userId: Number(user.id),
+        content,
+      });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comments", reviewId] });
+    },
+    onError: (error) => {
+      console.error("댓글 작성 실패:", error);
+      alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
+    },
+  });
+
+  // 댓글 수정 Mutation
+  const updateCommentMutation = useMutation({
+    mutationFn: ({ id, content }: { id: number; content: string }) => {
+      return updateComment(id, { content });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comments", reviewId] });
+    },
+    onError: (error) => {
+      console.error("댓글 수정 실패:", error);
+      alert("댓글 수정에 실패했습니다. 다시 시도해주세요.");
+    },
+  });
+
+  // 댓글 삭제 Mutation
+  const deleteCommentMutation = useMutation({
+    mutationFn: (commentId: number) => {
+      return deleteComment(commentId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comments", reviewId] });
+    },
+    onError: (error) => {
+      console.error("댓글 삭제 실패:", error);
+      alert("댓글 삭제에 실패했습니다. 다시 시도해주세요.");
     },
   });
 
@@ -166,6 +247,29 @@ const ReviewDetailPage = () => {
             <S.Tag key={index}>#{tag}</S.Tag>
           ))}
         </S.TagsContainer>
+      )}
+
+      {/* 댓글 섹션 */}
+      {!isLoadingComments && reviewId && (
+        <CommentList
+          comments={comments}
+          reviewId={reviewId}
+          currentUserId={user?.id || null}
+          users={usersMap}
+          onCreate={async (content) => {
+            await createCommentMutation.mutateAsync(content);
+          }}
+          onUpdate={async (id, content) => {
+            await updateCommentMutation.mutateAsync({ id, content });
+          }}
+          onDelete={async (id) => {
+            await deleteCommentMutation.mutateAsync(id);
+          }}
+          isCreating={createCommentMutation.isPending}
+          isUpdating={updateCommentMutation.isPending}
+          isDeleting={deleteCommentMutation.isPending}
+          isLoggedIn={isLoggedIn}
+        />
       )}
 
       {/* 이미지 확대 모달 */}
