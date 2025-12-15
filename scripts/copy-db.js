@@ -38,6 +38,20 @@ try {
   console.log(
     "✅ db.json의 users 데이터가 public/users.json으로 복사되었습니다."
   );
+
+  // comments 추출 및 id, reviewId, userId를 숫자로 변환
+  const comments = db.comments.map((comment) => ({
+    ...comment,
+    id: Number(comment.id),
+    reviewId: Number(comment.reviewId),
+    userId: Number(comment.userId),
+  }));
+
+  const commentsPath = join(__dirname, "../public/comments.json");
+  writeFileSync(commentsPath, JSON.stringify(comments, null, 2), "utf-8");
+  console.log(
+    "✅ db.json의 comments 데이터가 public/comments.json으로 복사되었습니다."
+  );
 } catch (error) {
   console.error("❌ db.json 복사 실패:", error);
   process.exit(1);
