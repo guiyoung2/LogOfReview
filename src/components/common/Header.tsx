@@ -272,11 +272,11 @@ const Header = () => {
           </li>
           {isLoggedIn ? (
             <>
-              <li>
+              {/* <li>
                 <Link to={`/user/${user?.id}`} onClick={closeMobileMenu}>
                   My page
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <LogoutButton
                   onClick={() => {
