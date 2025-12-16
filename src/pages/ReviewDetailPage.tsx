@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { getReviewById, deleteReview } from "../api/reviews";
 import {
   getComments,
@@ -56,11 +56,13 @@ const ReviewDetailPage = () => {
     queryFn: getUsers,
   });
 
-  // 사용자 맵 생성 (userId -> nickname)
-  const usersMap = users.reduce((acc, u) => {
-    acc[u.id] = { nickname: u.nickname };
-    return acc;
-  }, {} as Record<number, { nickname: string }>);
+  // 사용자 맵 생성 (userId -> nickname) - useMemo로 최적화
+  const usersMap = useMemo(() => {
+    return users.reduce((acc, u) => {
+      acc[u.id] = { nickname: u.nickname };
+      return acc;
+    }, {} as Record<number, { nickname: string }>);
+  }, [users]);
 
   // 리뷰 삭제 Mutation
   const deleteMutation = useMutation({
