@@ -1,4 +1,5 @@
 // src/components/review/ReviewCard.tsx
+import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import type { ReviewCardProps } from "../../types/review";
@@ -127,4 +128,4 @@ const ReviewCard = ({
   );
 };
 
-export default ReviewCard;
+export default React.memo(ReviewCard);

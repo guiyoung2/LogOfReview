@@ -1,4 +1,5 @@
 import { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import type { Comment } from "../../types/comment";
 import CommentForm from "./CommentForm";
@@ -164,4 +165,4 @@ const CommentItem = ({
   );
 };
 
-export default CommentItem;
+export default React.memo(CommentItem);

@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { getReviewById, deleteReview } from "../api/reviews";
 import {
   getComments,
@@ -137,6 +137,28 @@ const ReviewDetailPage = () => {
   const isOwner =
     isLoggedIn && user && review && Number(review.userId) === Number(user.id);
 
+  // 댓글 핸들러 메모이제이션 (useCallback)
+  const handleCreateComment = useCallback(
+    async (content: string) => {
+      await createCommentMutation.mutateAsync(content);
+    },
+    [createCommentMutation]
+  );
+
+  const handleUpdateComment = useCallback(
+    async (id: number, content: string) => {
+      await updateCommentMutation.mutateAsync({ id, content });
+    },
+    [updateCommentMutation]
+  );
+
+  const handleDeleteComment = useCallback(
+    async (id: number) => {
+      await deleteCommentMutation.mutateAsync(id);
+    },
+    [deleteCommentMutation]
+  );
+
   if (isLoading) return <S.Container>로딩 중...</S.Container>;
   if (error) return <S.Container>에러 발생</S.Container>;
   if (!review) return <S.Container>리뷰를 찾을 수 없습니다</S.Container>;
@@ -258,15 +280,9 @@ const ReviewDetailPage = () => {
           reviewId={reviewId}
           currentUserId={user?.id || null}
           users={usersMap}
-          onCreate={async (content) => {
-            await createCommentMutation.mutateAsync(content);
-          }}
-          onUpdate={async (id, content) => {
-            await updateCommentMutation.mutateAsync({ id, content });
-          }}
-          onDelete={async (id) => {
-            await deleteCommentMutation.mutateAsync(id);
-          }}
+          onCreate={handleCreateComment}
+          onUpdate={handleUpdateComment}
+          onDelete={handleDeleteComment}
           isCreating={createCommentMutation.isPending}
           isUpdating={updateCommentMutation.isPending}
           isDeleting={deleteCommentMutation.isPending}
