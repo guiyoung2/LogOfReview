@@ -1,6 +1,108 @@
 # 프로젝트 회고록 (Reflection)
 
-프로젝트를 진행하면서 헷갈렸던 내용들을 정리한 문서입니다.
+## 📝 프로젝트 개발 순서
+
+### 1단계: 프로젝트 초기 설정
+
+- Vite + React + TypeScript 프로젝트 생성
+- 필요한 패키지 설치 (React Query, Zustand, React Router, Axios, Styled Components)
+- 기본 폴더 구조 설정 (`src/pages`, `src/components`, `src/api`, `src/store`, `src/types`)
+- JSON Server 설정 및 `db.json` mock 데이터 생성
+
+### 2단계: 기본 라우팅 및 레이아웃
+
+- `App.tsx`에 React Router 설정
+- 기본 페이지 생성 (HomePage, AboutPage, NotFoundPage)
+- `Header` 컴포넌트 생성 (초기 버전)
+- `main.tsx`에 React Query Provider 설정
+
+### 3단계: 사용자 인증 시스템
+
+- Zustand로 사용자 상태 관리 스토어 생성 (`userStore.ts`)
+- `localStorage`에 로그인 상태 영구 저장 (persist middleware)
+- Axios 인스턴스 설정 및 인터셉터 구현
+  - 요청 인터셉터: 자동으로 토큰을 헤더에 추가
+  - 응답 인터셉터: 401 에러 시 자동 로그아웃
+- `LoginPage` 구현
+- 로그인 API 함수 구현 (`api/login.ts`)
+
+### 4단계: 리뷰 목록 페이지
+
+- `ReviewsPage` 구현
+- 리뷰 목록 조회 API 함수 구현 (`api/reviews.ts`)
+- `ReviewCard` 컴포넌트 생성
+- React Query의 `useQuery`로 리뷰 목록 데이터 페칭
+
+### 5단계: 리뷰 상세 페이지
+
+- `ReviewDetailPage` 구현
+- 리뷰 상세 조회 API 함수 구현
+- 이미지 슬라이더 컴포넌트 구현
+- 이미지 확대 모달 기능 추가
+- 태그 표시 기능
+
+### 6단계: 리뷰 작성 기능
+
+- `ReviewWritePage` 구현
+- `ReviewForm` 컴포넌트 생성 (재사용 가능한 폼)
+- 태그 입력 기능 (최대 4개)
+- React Query의 `useMutation`으로 리뷰 생성
+- 작성 성공 시 목록 페이지로 이동 (`replace: true`)
+
+### 7단계: 리뷰 수정/삭제 기능
+
+- `EditReviewPage` 구현
+- `ReviewForm`을 수정 모드로 재사용 (`initialData` prop)
+- 리뷰 수정 API 함수 구현 (`updateReview`)
+- `ReviewDetailPage`에 수정/삭제 버튼 추가
+- 권한 체크 로직 구현 (본인 리뷰만 수정/삭제 가능)
+- 삭제 기능 구현 (`deleteReview`)
+
+### 8단계: 검색 및 필터링 기능
+
+- `ReviewsPage`에 검색 바 추가
+- 제목, 내용, 태그로 검색 기능 구현
+- 카테고리 필터 추가 (음식, 장소, 물건, 옷)
+- 정렬 옵션 추가 (최신순, 오래된순, 평점 높은순, 평점 낮은순)
+- 필터/정렬 상태를 URL 쿼리 파라미터로 관리
+
+### 9단계: UI/UX 개선
+
+- `Toast` 컴포넌트 생성 (커스텀 알림 메시지)
+- `ReviewsPage`에 Floating Action Button (FAB) 추가
+  - 로그인 상태에 따라 다르게 동작 (로그인 시 작성 페이지 이동, 비로그인 시 Toast 표시)
+- `Header` 반응형 디자인 개선
+  - 모바일 환경에서 햄버거 메뉴 표시
+  - 햄버거 아이콘 애니메이션 (열릴 때 X 모양으로 변경)
+  - 로그인 상태에 따라 동적 메뉴 표시 (로그인 전: 로그인 버튼, 로그인 후: My page + 로그아웃)
+  - 닉네임을 메뉴 하단에 표시
+
+### 10단계: 댓글 기능 구현
+
+- 댓글 타입 정의 (`types/comment.ts`)
+- 댓글 API 함수 구현 (`api/comments.ts`)
+  - 댓글 조회, 생성, 수정, 삭제
+- 사용자 API 함수 구현 (`api/users.ts`) - 닉네임 조회용
+- `db.json`에 `comments` 데이터 추가
+- 댓글 컴포넌트 구현
+  - `CommentList`: 댓글 목록 컨테이너
+  - `CommentItem`: 개별 댓글 아이템 (수정/삭제 버튼 포함)
+  - `CommentForm`: 댓글 작성/수정 폼 (재사용)
+- `ReviewDetailPage`에 댓글 섹션 통합
+- 댓글 권한 체크 (본인 댓글만 수정/삭제 가능)
+
+### 11단계: 빌드 및 배포 준비
+
+- JSON Server의 한계 인식 (개발 환경에서만 동작)
+- 빌드 시 읽기 전용 데이터 복사 스크립트 생성 (`scripts/copy-db.js`)
+- 빌드 명령어에 데이터 복사 단계 추가
+
+### 12단계: 문서화
+
+- `README.md` 작성 (프로젝트 개요, 기능, 기술 스택, 실행 방법)
+- `reflection.md` 작성 (개발 과정에서의 문제와 해결 방법 정리)
+
+---
 
 ## 🤔 주요 문제과 해결 과정
 
@@ -95,8 +197,4 @@ const createCommentMutation = useMutation({
 
 ## 🎯 다음에 개선할 점
 
-1. **에러 처리**: 더 상세한 에러 메시지와 사용자 피드백
-2. **로딩 상태**: 스켈레톤 UI나 로딩 스피너 개선
-3. **타입 안정성**: 더 엄격한 TypeScript 타입 정의
-4. **성능 최적화**: React.memo, useMemo, useCallback 활용
-5. **테스트**: 단위 테스트 및 통합 테스트 작성
+**성능 최적화**: React.memo, useMemo, useCallback 활용
