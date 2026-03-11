@@ -98,9 +98,9 @@ npm run server
 
 ### 리뷰 상세 + 댓글 화면
 
-![리뷰 상세 화면](./docs/images/review-detail.png)
-(./docs/images/review-detail1.png)
-(./docs/images/review-detail2.png)
+![리뷰 상세 화면 1](./docs/images/review-detail.png)
+![리뷰 상세 화면 2](./docs/images/review-detail1.png)
+![리뷰 상세 화면 3](./docs/images/review-detail2.png)
 
 - 리뷰 본문, 작성자 정보, 댓글 목록/작성 흐름을 하나의 화면에서 확인할 수 있습니다.
 
