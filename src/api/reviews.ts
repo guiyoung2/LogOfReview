@@ -10,7 +10,7 @@ import type {
 export type SortOption = "latest" | "oldest" | "ratingHigh" | "ratingLow";
 
 // 정렬 함수
-const sortReviews = (reviews: Review[], sortBy: SortOption): Review[] => {
+export const sortReviews = (reviews: Review[], sortBy: SortOption): Review[] => {
   const sorted = [...reviews];
 
   switch (sortBy) {
