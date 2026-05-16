@@ -13,16 +13,30 @@ import { useUserStore } from "../store/userStore";
 import Toast from "../components/common/Toast";
 import styled from "styled-components";
 
+// 유효한 sort 값 목록 — 잘못된 URL 파라미터를 기본값으로 폴백
+const SORT_OPTIONS = [
+  "latest",
+  "oldest",
+  "ratingHigh",
+  "ratingLow",
+] as const satisfies readonly SortOption[];
+
+// URL sort 파라미터 유효성 검증 후 기본값 반환
+const parseSortOption = (value: string | null): SortOption =>
+  SORT_OPTIONS.find((o) => o === value) ?? "latest";
+
 const ReviewsPage = () => {
   // const { category } = useParams(); // URL에서 카테고리 받기
   const nav = useNavigate();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const category = searchParams.get("category") || undefined;
+  // URL 파생 확정 검색어·정렬 (새로고침·뒤로가기 시 동일 상태 재현)
+  const activeSearchQuery = searchParams.get("q") || "";
+  const sortBy = parseSortOption(searchParams.get("sort"));
   const { isLoggedIn } = useUserStore();
   const [showToast, setShowToast] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [activeSearchQuery, setActiveSearchQuery] = useState(""); // 실제 검색에 사용되는 검색어
-  const [sortBy, setSortBy] = useState<SortOption>("latest"); // 정렬 옵션 (기본값: 최신순)
+  // 입력창 즉시값은 로컬 상태로 유지 (확정 전 입력)
+  const [searchQuery, setSearchQuery] = useState(activeSearchQuery);
 
   // React Query로 데이터 가져오기
   const {
@@ -30,9 +44,8 @@ const ReviewsPage = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["reviews", category, activeSearchQuery, sortBy], // 카테고리, 활성 검색어, 정렬 옵션이 바뀌면 새로 요청
+    queryKey: ["reviews", category, activeSearchQuery, sortBy], // URL 파생값이라 새로고침·뒤로가기 시 동일 상태 재현
     queryFn: () => {
-      // 활성 검색어가 있으면 검색 (카테고리와 정렬과 함께), 없으면 카테고리 필터 또는 전체 조회
       if (activeSearchQuery.trim()) {
         return searchReviews(activeSearchQuery, category, sortBy);
       }
@@ -42,9 +55,18 @@ const ReviewsPage = () => {
     },
   });
 
-  // 검색 실행 함수
+  // 검색 확정 시 URL q 파라미터 갱신
   const handleSearch = () => {
-    setActiveSearchQuery(searchQuery.trim());
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      const trimmed = searchQuery.trim();
+      if (trimmed) {
+        next.set("q", trimmed);
+      } else {
+        next.delete("q");
+      }
+      return next;
+    });
   };
 
   // Enter 키로 검색
@@ -54,20 +76,27 @@ const ReviewsPage = () => {
     }
   };
 
-  // 검색어 초기화
+  // 검색 초기화 — URL q 제거
   const handleClearSearch = () => {
     setSearchQuery("");
-    setActiveSearchQuery("");
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      next.delete("q");
+      return next;
+    });
   };
 
-  // 필터 변경 함수
+  // 카테고리 변경 — q·sort 파라미터 유지
   const handleCategoryChange = (newCategory?: string) => {
-    // 필터 변경 시 검색어는 유지하되, 활성 검색어는 초기화하지 않음
-    if (newCategory) {
-      nav(`/reviews?category=${newCategory}`);
-    } else {
-      nav("/reviews");
-    }
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (newCategory) {
+        next.set("category", newCategory);
+      } else {
+        next.delete("category");
+      }
+      return next;
+    });
   };
 
   // 카테고리 한글 변환
@@ -120,7 +149,19 @@ const ReviewsPage = () => {
         <PageTitle>{getCategoryName(category)} 리뷰</PageTitle>
         <SortSelect
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as SortOption)}
+          onChange={(e) => {
+            const val = e.target.value as SortOption;
+            setSearchParams((prev) => {
+              const next = new URLSearchParams(prev);
+              // 기본값(latest)은 URL에 불필요하므로 제거
+              if (val === "latest") {
+                next.delete("sort");
+              } else {
+                next.set("sort", val);
+              }
+              return next;
+            });
+          }}
         >
           <option value="latest">최신순</option>
           <option value="oldest">오래된순</option>
@@ -188,9 +229,10 @@ const ReviewsPage = () => {
       ) : (
         /* 리뷰 그리드 */
         <ReviewGrid>
-          {reviews.map((review) => (
+          {reviews.map((review, index) => (
             <ReviewCard
               key={review.id}
+              priority={index === 0}
               id={review.id}
               title={review.title}
               category={review.category}

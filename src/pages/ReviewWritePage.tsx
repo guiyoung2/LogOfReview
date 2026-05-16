@@ -1,10 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { createReview } from "../api/reviews";
 import { useUserStore } from "../store/userStore";
 import ReviewForm from "../components/review/ReviewForm";
+import Toast from "../components/common/Toast";
 import styled from "styled-components";
 import type { CreateReviewRequest, UpdateReviewRequest } from "../types/review";
+
+interface ToastState {
+  message: string;
+  type: "info" | "success" | "error" | "warning";
+  showConfirm?: boolean;
+  onConfirm?: () => void;
+}
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -22,6 +31,7 @@ const ReviewWritePage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user, isLoggedIn } = useUserStore();
+  const [toast, setToast] = useState<ToastState | null>(null);
 
   // 리뷰 작성 Mutation (모든 hooks는 조건부 return 전에 호출)
   const createMutation = useMutation({
@@ -34,7 +44,7 @@ const ReviewWritePage = () => {
     },
     onError: (error) => {
       console.error("리뷰 작성 실패:", error);
-      alert("리뷰 작성에 실패했습니다. 다시 시도해주세요.");
+      setToast({ message: "리뷰 작성에 실패했습니다. 다시 시도해주세요.", type: "error" });
     },
   });
 
@@ -85,15 +95,27 @@ const ReviewWritePage = () => {
     await createMutation.mutateAsync(createData);
   };
 
-  // 취소 핸들러
+  // 취소 전 확인 Toast 표시
   const handleCancel = () => {
-    if (window.confirm("작성 중인 내용이 사라집니다. 정말 취소하시겠습니까?")) {
-      navigate("/reviews", { replace: true });
-    }
+    setToast({
+      message: "작성 중인 내용이 사라집니다. 정말 취소하시겠습니까?",
+      type: "warning",
+      showConfirm: true,
+      onConfirm: () => navigate("/reviews", { replace: true }),
+    });
   };
 
   return (
     <PageContainer>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          showConfirm={toast.showConfirm}
+          onConfirm={toast.onConfirm}
+          onClose={() => setToast(null)}
+        />
+      )}
       <PageTitle>리뷰 작성</PageTitle>
       <ReviewForm
         onSubmit={handleSubmit}

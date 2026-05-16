@@ -1,6 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState, useMemo, useCallback } from "react";
+import Toast from "../components/common/Toast";
 import { getReviewById, deleteReview } from "../api/reviews";
 import {
   getComments,
@@ -16,6 +17,13 @@ import ImageSlider from "../components/review/ImageSlider";
 import ImageModal from "../components/review/ImageModal";
 import * as S from "./ReviewDetailPageS";
 
+interface ToastState {
+  message: string;
+  type: "info" | "success" | "error" | "warning";
+  showConfirm?: boolean;
+  onConfirm?: () => void;
+}
+
 const ReviewDetailPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -23,6 +31,7 @@ const ReviewDetailPage = () => {
   const { user, isLoggedIn } = useUserStore();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toast, setToast] = useState<ToastState | null>(null);
 
   const reviewId = id ? Number(id) : null;
 
@@ -83,7 +92,7 @@ const ReviewDetailPage = () => {
     },
     onError: (error) => {
       console.error("리뷰 삭제 실패:", error);
-      alert("리뷰 삭제에 실패했습니다. 다시 시도해주세요.");
+      setToast({ message: "리뷰 삭제에 실패했습니다. 다시 시도해주세요.", type: "error" });
     },
   });
 
@@ -104,7 +113,7 @@ const ReviewDetailPage = () => {
     },
     onError: (error) => {
       console.error("댓글 작성 실패:", error);
-      alert("댓글 작성에 실패했습니다. 다시 시도해주세요.");
+      setToast({ message: "댓글 작성에 실패했습니다. 다시 시도해주세요.", type: "error" });
     },
   });
 
@@ -118,7 +127,7 @@ const ReviewDetailPage = () => {
     },
     onError: (error) => {
       console.error("댓글 수정 실패:", error);
-      alert("댓글 수정에 실패했습니다. 다시 시도해주세요.");
+      setToast({ message: "댓글 수정에 실패했습니다. 다시 시도해주세요.", type: "error" });
     },
   });
 
@@ -132,7 +141,7 @@ const ReviewDetailPage = () => {
     },
     onError: (error) => {
       console.error("댓글 삭제 실패:", error);
-      alert("댓글 삭제에 실패했습니다. 다시 시도해주세요.");
+      setToast({ message: "댓글 삭제에 실패했습니다. 다시 시도해주세요.", type: "error" });
     },
   });
 
@@ -185,11 +194,14 @@ const ReviewDetailPage = () => {
   const openModal = useCallback(() => setIsModalOpen(true), []);
   const closeModal = useCallback(() => setIsModalOpen(false), []);
 
-  // 삭제 핸들러
+  // 삭제 전 확인 Toast 표시
   const handleDelete = () => {
-    if (window.confirm("정말 이 리뷰를 삭제하시겠습니까?")) {
-      deleteMutation.mutate();
-    }
+    setToast({
+      message: "정말 이 리뷰를 삭제하시겠습니까?",
+      type: "warning",
+      showConfirm: true,
+      onConfirm: () => deleteMutation.mutate(),
+    });
   };
 
   // 수정 핸들러
@@ -203,6 +215,16 @@ const ReviewDetailPage = () => {
 
   return (
     <S.Container>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          showConfirm={toast.showConfirm}
+          onConfirm={toast.onConfirm}
+          onClose={() => setToast(null)}
+        />
+      )}
+
       {/* 뒤로가기 버튼 및 수정/삭제 버튼 */}
       <ReviewActions
         onBack={() => navigate(-1)}
