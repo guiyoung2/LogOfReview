@@ -55,12 +55,12 @@
 | **커버리지 — Branches** | 51.81% |
 | **커버리지 — Functions** | 44.73% |
 | **커버리지 — Lines** | 60.90% |
-| **JS 번들 (gzip)** | 124.02 kB |
+| **JS 번들 초기 청크 (gzip)** | 61.6 kB (코드 스플리팅 적용 — 페이지 7개 별도 청크 + vendor 4개 캐시 분리) |
 | **CI** | GitHub Actions — push·PR 시 lint·타입체크·테스트·빌드 자동 실행 |
-| **Lighthouse Performance** | 홈 **86** / 목록 **60** / 상세 **60** (Chrome Mobile, 배포 기준) |
+| **Lighthouse Performance** | 홈 **86** / 목록 **61** / 상세 **60** (Chrome Mobile, 배포 기준) |
 
 커버리지 대상: `api/reviews.ts`, `pages/ReviewsPage.tsx`, `components/review/ReviewCard.tsx`, `api/axios.ts`, `store/userStore.ts` 등 핵심 도메인.
-Lighthouse 목록·상세 60점 병목은 json-server mock API 직렬 호출 구조에 기인 — prod 정적 JSON 구조에서는 LCP 개선 가능.
+Lighthouse 목록 61점 병목은 **data-driven 이미지 URL 구조** — `reviews.json` fetch 완료 후 img src가 결정되므로 브라우저가 이미지를 미리 preload할 수 없음. SSR 없는 SPA의 구조적 한계.
 
 ---
 
