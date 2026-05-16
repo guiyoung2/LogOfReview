@@ -4,6 +4,7 @@
 > **RESTful API · 서버 상태 관리 · 클라이언트 상태 관리 · URL 기반 상태**의 흐름을 직접 설계하기 위해 만든 개인 프로젝트입니다.
 > 백엔드 의존 없이 클라이언트 아키텍처 검증에 집중하기 위해 JSON Server로 API를 모킹했습니다.
 
+![CI](https://github.com/guiyoung2/LogOfReview/actions/workflows/ci.yml/badge.svg)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite)](https://vitejs.dev/)
