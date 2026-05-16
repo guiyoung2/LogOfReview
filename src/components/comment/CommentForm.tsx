@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
+import Toast from "../common/Toast";
 
 interface CommentFormProps {
   onSubmit: (content: string) => Promise<void>;
@@ -83,11 +84,12 @@ const CommentForm = ({
   isEdit = false,
 }: CommentFormProps) => {
   const [content, setContent] = useState(initialContent);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!content.trim()) {
-      alert("댓글 내용을 입력해주세요.");
+      setErrorMessage("댓글 내용을 입력해주세요.");
       return;
     }
     await onSubmit(content.trim());
@@ -97,7 +99,15 @@ const CommentForm = ({
   };
 
   return (
-    <FormContainer onSubmit={handleSubmit}>
+    <>
+      {errorMessage && (
+        <Toast
+          message={errorMessage}
+          type="warning"
+          onClose={() => setErrorMessage(null)}
+        />
+      )}
+      <FormContainer onSubmit={handleSubmit}>
       <TextArea
         value={content}
         onChange={(e) => setContent(e.target.value)}
@@ -115,6 +125,7 @@ const CommentForm = ({
         </SubmitButton>
       </ButtonContainer>
     </FormContainer>
+    </>
   );
 };
 

@@ -22,10 +22,9 @@ export const loadComments = async (): Promise<Comment[]> => {
   return response.data;
 };
 
-// prod 쓰기 차단 가드
+// prod 쓰기 차단 가드 (UI 책임은 호출자에게 위임)
 export const assertWritable = (errorMessage: string): void => {
   if (import.meta.env.PROD) {
-    alert(errorMessage);
     throw new Error(errorMessage);
   }
 };

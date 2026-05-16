@@ -1,10 +1,19 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { getReviewById, updateReview } from "../api/reviews";
 import { useUserStore } from "../store/userStore";
 import ReviewForm from "../components/review/ReviewForm";
+import Toast from "../components/common/Toast";
 import styled from "styled-components";
 import type { UpdateReviewRequest } from "../types/review";
+
+interface ToastState {
+  message: string;
+  type: "info" | "success" | "error" | "warning";
+  showConfirm?: boolean;
+  onConfirm?: () => void;
+}
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -23,6 +32,7 @@ const EditReviewPage = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { user, isLoggedIn } = useUserStore();
+  const [toast, setToast] = useState<ToastState | null>(null);
 
   // 기존 리뷰 데이터 가져오기
   const {
@@ -59,7 +69,7 @@ const EditReviewPage = () => {
     },
     onError: (error) => {
       console.error("리뷰 수정 실패:", error);
-      alert("리뷰 수정에 실패했습니다. 다시 시도해주세요.");
+      setToast({ message: "리뷰 수정에 실패했습니다. 다시 시도해주세요.", type: "error" });
     },
   });
 
@@ -195,15 +205,27 @@ const EditReviewPage = () => {
     await updateMutation.mutateAsync(data);
   };
 
-  // 취소 핸들러
+  // 취소 전 확인 Toast 표시
   const handleCancel = () => {
-    if (window.confirm("수정 중인 내용이 사라집니다. 정말 취소하시겠습니까?")) {
-      navigate(`/reviews/${id}`);
-    }
+    setToast({
+      message: "수정 중인 내용이 사라집니다. 정말 취소하시겠습니까?",
+      type: "warning",
+      showConfirm: true,
+      onConfirm: () => navigate(`/reviews/${id}`),
+    });
   };
 
   return (
     <PageContainer>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          showConfirm={toast.showConfirm}
+          onConfirm={toast.onConfirm}
+          onClose={() => setToast(null)}
+        />
+      )}
       <PageTitle>리뷰 수정</PageTitle>
       <ReviewForm
         initialData={review}

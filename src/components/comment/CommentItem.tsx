@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import type { Comment } from "../../types/comment";
 import CommentForm from "./CommentForm";
+import Toast from "../common/Toast";
 
 interface CommentItemProps {
   comment: Comment;
@@ -107,22 +108,35 @@ const CommentItem = ({
   isDeleting = false,
 }: CommentItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleUpdate = async (content: string) => {
     await onUpdate(comment.id, content);
     setIsEditing(false);
   };
 
-  const handleDelete = async () => {
-    if (window.confirm("정말 이 댓글을 삭제하시겠습니까?")) {
-      await onDelete(comment.id);
-    }
+  const handleDelete = () => {
+    setShowDeleteConfirm(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    setShowDeleteConfirm(false);
+    await onDelete(comment.id);
   };
 
   const isEdited = comment.createdAt !== comment.updatedAt;
 
   return (
     <CommentContainer>
+      {showDeleteConfirm && (
+        <Toast
+          message="정말 이 댓글을 삭제하시겠습니까?"
+          type="warning"
+          showConfirm={true}
+          onConfirm={handleConfirmDelete}
+          onClose={() => setShowDeleteConfirm(false)}
+        />
+      )}
       <CommentHeader>
         <AuthorInfo>
           <AuthorName>{authorNickname}</AuthorName>
