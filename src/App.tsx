@@ -8,6 +8,7 @@ import EditReviewPage from "./pages/EditReviewPage";
 import Header from "./components/common/Header";
 import NotFoundPage from "./pages/NotFoundPage";
 import ClickSpark from "./components/common/ClickEffect";
+import ProtectedRoute from "./components/common/ProtectedRoute";
 import { Routes, Route } from "react-router-dom";
 import ReviewDetailPage from "./pages/ReviewDetailPage";
 
@@ -24,9 +25,9 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/reviews" element={<ReviewsPage />} />
-        <Route path="/reviews/new" element={<ReviewWritePage />} />
+        <Route path="/reviews/new" element={<ProtectedRoute><ReviewWritePage /></ProtectedRoute>} />
         <Route path="/reviews/:id" element={<ReviewDetailPage />} />
-        <Route path="/reviews/:id/edit" element={<EditReviewPage />} />
+        <Route path="/reviews/:id/edit" element={<ProtectedRoute><EditReviewPage /></ProtectedRoute>} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
