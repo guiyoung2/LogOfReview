@@ -4,6 +4,9 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import type { ReviewCardProps } from "../../types/review";
 
+// priority: 첫 번째 카드(LCP 후보)에 즉시 로드 힌트 부여
+type Props = ReviewCardProps & { priority?: boolean };
+
 const Card = styled(Link)`
   display: block;
   background: white;
@@ -103,14 +106,20 @@ const ReviewCard = ({
   images,
   content,
   tags,
-}: ReviewCardProps) => {
+  priority = false,
+}: Props) => {
   const displayImage =
     images?.length > 0 ? images[0] : `reviews/${category}/ex_${category}.png`;
 
   return (
     <Card to={`/reviews/${id}`}>
       <ImageWrapper>
-        <img src={displayImage} alt={title} />
+        <img
+          src={displayImage}
+          alt={title}
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "auto"}
+        />
         {images.length > 1 && <ImageCount>📷 {images.length}</ImageCount>}
       </ImageWrapper>
       <CardContent>

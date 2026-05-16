@@ -229,9 +229,10 @@ const ReviewsPage = () => {
       ) : (
         /* 리뷰 그리드 */
         <ReviewGrid>
-          {reviews.map((review) => (
+          {reviews.map((review, index) => (
             <ReviewCard
               key={review.id}
+              priority={index === 0}
               id={review.id}
               title={review.title}
               category={review.category}
