@@ -193,7 +193,24 @@ export const loadReviews = async (): Promise<Review[]> => {
 **결과**
 각 API 함수는 비즈니스 로직에만 집중. 토큰 관리는 횡단 관심사로 분리.
 
-### 5-6. 같은 폼 컴포넌트로 작성·수정 모드 처리
+### 5-6. LCP 병목 분석 — SPA 구조적 한계 확인
+
+**문제**
+Lighthouse 목록 페이지 LCP 7.1s. 브라우저 DevTools로 네트워크 폭포를 확인한 결과 이미지 요청이 항상 `reviews.json` fetch 이후에 시작됨.
+
+**원인**
+`reviews.json` fetch 완료 → JS 파싱 → img src 결정 순서. img src가 데이터에서 결정되는 구조라 브라우저 HTML 파서 단계에서 이미지를 preload할 수 없음.
+
+**시도 1 — 코드 스플리팅 + lazy loading**
+React.lazy + Suspense로 7개 페이지 lazy 로드, vite `manualChunks`로 vendor 4개 청크 캐시 분리 → 초기 번들 124kB → 61.6kB(-50%). TBT 660ms → 610ms 개선, CLS 0.024 → 0 개선. LCP는 변화 없음.
+
+**시도 2 — `<link rel="preload" href="/reviews.json" as="fetch">`**
+HTML 파싱 시점에 reviews.json을 미리 다운로드해 img src 결정을 앞당기려 했으나, preload의 credentials 모드(`crossorigin="anonymous"` → omit)와 실제 `fetch()` 기본 credentials(`same-origin`)가 달라 브라우저가 캐시를 재사용하지 못하고 이중 다운로드 발생. TBT가 오히려 악화돼 revert.
+
+**결론**
+LCP 근본 해결은 SSR(Next.js 등) 없이 불가. HTML에 이미지 URL이 포함돼야 브라우저가 `<link rel="preload" as="image">` 힌트를 HTML 파싱 시점에 사용할 수 있음.
+
+### 5-7. 같은 폼 컴포넌트로 작성·수정 모드 처리
 
 **문제**
 "댓글 작성"과 "댓글 수정"을 별도 컴포넌트로 만들면 동일한 입력·검증 로직이 중복됩니다.
