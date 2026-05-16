@@ -22,3 +22,17 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.claude
+
+# 하네스 진단·측정 산출물 (로컬 보관, 면접·이력서 근거 자료)
+diagnosis.md
+resume-logofreview-draft.md
+# 번들 분석 리포트
+stats.html
+CLAUDE.md
+
+# copy-db.js 빌드 시 자동 생성되는 정적 JSON
+public/reviews.json
+public/users.json
+public/comments.json
