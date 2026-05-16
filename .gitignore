@@ -32,7 +32,6 @@ resume-logofreview-draft.md
 stats.html
 # 테스트 커버리지 HTML 리포트 (생성 파일)
 coverage/
-CLAUDE.md
 
 # copy-db.js 빌드 시 자동 생성되는 정적 JSON
 public/reviews.json
